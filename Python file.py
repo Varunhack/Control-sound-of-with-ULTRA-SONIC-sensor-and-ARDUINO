@@ -4,7 +4,7 @@ import serial
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-#from pen_track2 import main
+
 def remap( x, oMin, oMax, nMin, nMax ):
     
     #range check
@@ -39,14 +39,14 @@ def remap( x, oMin, oMax, nMin, nMax ):
         result = newMax - portion
 
     return result
-
+#Setup 
 devices = AudioUtilities.GetSpeakers()
 interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
 volume = cast(interface, POINTER(IAudioEndpointVolume))
 ser = serial.Serial('COM10',9600)
 
 l = [0]
-
+#Hoping or Looping in into the main function
 while True:
     x = ser.readline().decode('latin1')
     print(x)
@@ -61,4 +61,4 @@ while True:
             l.append(y)
         elif z > 20:
             volume.SetMasterVolumeLevel(l[-1],None)
-#main()
+
